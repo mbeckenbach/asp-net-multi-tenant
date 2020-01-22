@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using StarFleetOs.Database;
 using StarFleetOs.Database.App;
 using StarFleetOs.Database.Tenants;
 
@@ -34,6 +35,11 @@ namespace StarFleetOs
             // Register the db context with dependency injection
             services.AddDbContext<TenantsDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add Caching
+            //? Better to use a redis cache when running on azure or similar
+            services.AddDistributedMemoryCache();
+            services.AddDataProtection();
 
             // Provide MVC
             services.AddControllersWithViews();
@@ -66,6 +72,9 @@ namespace StarFleetOs
             // Serves the registered OpenAPI/Swagger documents by default on `/swagger/{documentName}/swagger.json`
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            // Seed Database / Apply Migrations
+            app.UpdateDatabase();
 
             // Adds endpoint routing support
             app.UseRouting();
