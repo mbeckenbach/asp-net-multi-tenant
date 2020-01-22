@@ -45,6 +45,7 @@ namespace StarFleetOs
 
             // Provide App Tenant via DI
             services.AddMultitenancy<AppTenant, AppTenantResolver>();
+            services.AddScoped<IEntityTypeProvider, DefaultEntityTypeProvider>();
 
             // Provide MVC
             services.AddControllersWithViews();

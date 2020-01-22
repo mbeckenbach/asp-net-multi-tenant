@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using StarFleetOs.Database.App;
+using StarFleetOs.Database.App.Models;
 using StarFleetOs.Database.Tenants;
 using StarFleetOs.Database.Tenants.Models;
 using System;
@@ -25,21 +26,21 @@ namespace StarFleetOs.Database
                     tenantsDbContext.Database.Migrate();
 
                     // Seed initial data
-                    var defaultTenant = SeedTenant(tenantsDbContext, new AppTenant
+                    var enterprise = SeedTenant(tenantsDbContext, new AppTenant
                     {
                         Identifier = "NCC-1701",
                         Name = "USS Enterprise",
                         Domain = "localhost:5001"
                     });
 
-                    SeedTenant(tenantsDbContext, new AppTenant
+                    var voyager = SeedTenant(tenantsDbContext, new AppTenant
                     {
                         Identifier = "NCC-74656",
                         Name = "USS Voyager",
                         Domain = "localhost:5002"
                     });
 
-                    SeedTenant(tenantsDbContext, new AppTenant
+                    var defiant = SeedTenant(tenantsDbContext, new AppTenant
                     {
                         Identifier = "NX-74205",
                         Name = "USS Defiant",
@@ -48,19 +49,40 @@ namespace StarFleetOs.Database
 
                     // Save initial data
                     tenantsDbContext.SaveChanges();
+
+                    using (var appDbContext = serviceScope.ServiceProvider.GetService<AppDbContext>())
+                    {
+                        // Apply any pending migration
+                        appDbContext.Database.Migrate();
+
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Jean-Luc Picard", Rank = "Captain", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "William T. Riker", Rank = "Commander", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Data", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Geordi La Forge", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Reginald Barclay", Rank = "Lieutenant", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Beverly Crusher", Rank = "Commander", TenantId = enterprise.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Deanna Troi", Rank = "Counselor", TenantId = enterprise.Id });
+                        
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Kathryn Janeway", Rank = "Captain", TenantId = voyager.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Seven of Nine", Rank = "Borg drone", TenantId = voyager.Id });
+                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Tuvok", Rank = "Lieutenant Commander", TenantId = voyager.Id });
+
+                        // Save initial data
+                        appDbContext.SaveChanges();
+                    }
                 }
             }
         }
 
         private static AppTenant SeedTenant(TenantsDbContext db, AppTenant tenant)
         {
-            var defaultTenant = db.AppTenants.FirstOrDefault(t => t.Domain == tenant.Domain);
-            if (defaultTenant != null) return defaultTenant;
+            var dbTenant = db.AppTenants.FirstOrDefault(t => t.Domain == tenant.Domain);
+            if (dbTenant != null) return dbTenant;
 
-            defaultTenant = tenant;
+            dbTenant = tenant;
             db.AppTenants.Add(tenant);
 
-            return defaultTenant;
+            return dbTenant;
         }
     }
 }

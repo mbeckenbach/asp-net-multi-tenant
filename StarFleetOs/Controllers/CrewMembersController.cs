@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StarFleetOs.Database.App;
 using StarFleetOs.Database.App.Models;
+using StarFleetOs.Database.Tenants.Models;
 
 namespace StarFleetOs.Controllers
 {
@@ -15,10 +16,12 @@ namespace StarFleetOs.Controllers
     public class CrewMembersController : ControllerBase
     {
         private readonly AppDbContext _context;
+        private readonly AppTenant appTenant;
 
-        public CrewMembersController(AppDbContext context)
+        public CrewMembersController(AppDbContext context, AppTenant appTenant)
         {
             _context = context;
+            this.appTenant = appTenant;
         }
 
         [HttpGet]
@@ -50,6 +53,9 @@ namespace StarFleetOs.Controllers
                 return BadRequest();
             }
 
+            // Ensure, that the client does not set the tenant
+            crewMember.TenantId = appTenant.Id;
+
             _context.Entry(crewMember).State = EntityState.Modified;
 
             try
@@ -76,6 +82,9 @@ namespace StarFleetOs.Controllers
         [HttpPost]
         public async Task<ActionResult<CrewMember>> PostCrewMember(CrewMember crewMember)
         {
+            // Ensure, that the client does not set the tenant
+            crewMember.TenantId = appTenant.Id;
+
             _context.CrewMembers.Add(crewMember);
             await _context.SaveChangesAsync();
 

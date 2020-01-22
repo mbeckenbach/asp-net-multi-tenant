@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using StarFleetOs.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace StarFleetOs.Database.App.Models
         }
     }
 
-    public class CrewMember
+    public class CrewMember : TenantEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
