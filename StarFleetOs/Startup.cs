@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StarFleetOs.Database.App;
+using StarFleetOs.Database.Tenants;
 
 namespace StarFleetOs
 {
@@ -28,6 +29,10 @@ namespace StarFleetOs
         {
             // Register the db context with dependency injection
             services.AddDbContext<AppDbContext>
+                (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            // Register the db context with dependency injection
+            services.AddDbContext<TenantsDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Provide MVC
