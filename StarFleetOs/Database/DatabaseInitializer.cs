@@ -55,17 +55,20 @@ namespace StarFleetOs.Database
                         // Apply any pending migration
                         appDbContext.Database.Migrate();
 
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Jean-Luc Picard", Rank = "Captain", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "William T. Riker", Rank = "Commander", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Data", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Geordi La Forge", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Reginald Barclay", Rank = "Lieutenant", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Beverly Crusher", Rank = "Commander", TenantId = enterprise.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Deanna Troi", Rank = "Counselor", TenantId = enterprise.Id });
-                        
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Kathryn Janeway", Rank = "Captain", TenantId = voyager.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Seven of Nine", Rank = "Borg drone", TenantId = voyager.Id });
-                        appDbContext.CrewMembers.Add(new CrewMember { Name = "Tuvok", Rank = "Lieutenant Commander", TenantId = voyager.Id });
+                        if (appDbContext.CrewMembers.IgnoreQueryFilters().Any() == false)
+                        {
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Jean-Luc Picard", Rank = "Captain", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "William T. Riker", Rank = "Commander", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Data", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Geordi La Forge", Rank = "Lieutenant Commander", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Reginald Barclay", Rank = "Lieutenant", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Beverly Crusher", Rank = "Commander", TenantId = enterprise.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Deanna Troi", Rank = "Counselor", TenantId = enterprise.Id });
+
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Kathryn Janeway", Rank = "Captain", TenantId = voyager.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Seven of Nine", Rank = "Borg drone", TenantId = voyager.Id });
+                            appDbContext.CrewMembers.Add(new CrewMember { Name = "Tuvok", Rank = "Lieutenant Commander", TenantId = voyager.Id });
+                        }
 
                         // Save initial data
                         appDbContext.SaveChanges();

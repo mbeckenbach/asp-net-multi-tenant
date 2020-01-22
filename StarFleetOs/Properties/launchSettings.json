@@ -18,7 +18,7 @@
     "StarFleetOs": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;https://localhost:5002;https://localhost:5003",
+      "applicationUrl": "https://localhost:5001;https://localhost:5002;https://localhost:5003;https://localhost:5004",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -85,6 +85,9 @@ namespace StarFleetOs
             // Seed Database / Apply Migrations
             app.UpdateDatabase();
 
+            // Serve static files
+            app.UseStaticFiles();
+
             // Adds endpoint routing support
             app.UseRouting();
 
@@ -93,7 +96,7 @@ namespace StarFleetOs
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

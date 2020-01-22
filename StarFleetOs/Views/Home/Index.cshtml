@@ -1,0 +1,16 @@
+﻿@model StarFleetOs.Model.HomeViewModel
+@{
+    ViewData["Title"] = Model.ShipName;
+}
+
+<h1>@Model.ShipName</h1>
+<h2>@Model.ShipIdentifier</h2>
+
+<img src="~/@Model.Image" style="width: 500px;" />
+
+<ul>
+    @foreach (var member in Model.CrewMembers)
+    {
+        <li>@member.Rank @member.Name</li>
+    }
+</ul>
