@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using StarFleetOs.Database;
 using StarFleetOs.Database.App;
 using StarFleetOs.Database.Tenants;
+using StarFleetOs.Database.Tenants.Models;
+using StarFleetOs.Services;
 
 namespace StarFleetOs
 {
@@ -40,6 +42,9 @@ namespace StarFleetOs
             //? Better to use a redis cache when running on azure or similar
             services.AddDistributedMemoryCache();
             services.AddDataProtection();
+
+            // Provide App Tenant via DI
+            services.AddMultitenancy<AppTenant, AppTenantResolver>();
 
             // Provide MVC
             services.AddControllersWithViews();
@@ -72,6 +77,9 @@ namespace StarFleetOs
             // Serves the registered OpenAPI/Swagger documents by default on `/swagger/{documentName}/swagger.json`
             app.UseOpenApi();
             app.UseSwaggerUi3();
+
+            // Get tenant from each request
+            app.UseMultitenancy<AppTenant>();
 
             // Seed Database / Apply Migrations
             app.UpdateDatabase();

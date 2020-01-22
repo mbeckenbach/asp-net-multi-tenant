@@ -21,14 +21,12 @@ namespace StarFleetOs.Controllers
             _context = context;
         }
 
-        // GET: api/CrewMembers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CrewMember>>> GetCrewMembers()
         {
             return await _context.CrewMembers.ToListAsync();
         }
 
-        // GET: api/CrewMembers/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CrewMember>> GetCrewMember(Guid id)
         {
@@ -42,7 +40,6 @@ namespace StarFleetOs.Controllers
             return crewMember;
         }
 
-        // PUT: api/CrewMembers/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPut("{id}")]
@@ -74,7 +71,6 @@ namespace StarFleetOs.Controllers
             return NoContent();
         }
 
-        // POST: api/CrewMembers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
         [HttpPost]
@@ -86,7 +82,6 @@ namespace StarFleetOs.Controllers
             return CreatedAtAction("GetCrewMember", new { id = crewMember.Id }, crewMember);
         }
 
-        // DELETE: api/CrewMembers/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<CrewMember>> DeleteCrewMember(Guid id)
         {

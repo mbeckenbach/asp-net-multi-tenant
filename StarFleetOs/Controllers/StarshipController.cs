@@ -16,24 +16,18 @@ namespace StarFleetOs.Controllers
     [ApiController]
     public class StarshipController : ControllerBase
     {
-        private readonly IDistributedCache cache;
-        private readonly TenantsDbContext db;
+        private readonly AppTenant tenant;
 
         public StarshipController(
-            IDistributedCache cache,
-            TenantsDbContext db
+            AppTenant tenant
             )
         {
-            this.cache = cache;
-            this.db = db;
+            this.tenant = tenant;
         }
 
-        // GET: api/Default
         [HttpGet]
-        public async Task<StarshipViewModel> Get()
+        public StarshipViewModel Get()
         {
-            var tenant = await new AppTenant().GetFromCacheAsync(cache, db, Request);
-
             return new StarshipViewModel
             {
                 Identifier = tenant.Identifier,
