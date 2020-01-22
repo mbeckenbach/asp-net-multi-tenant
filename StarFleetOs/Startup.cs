@@ -32,6 +32,19 @@ namespace StarFleetOs
 
             // Provide MVC
             services.AddControllersWithViews();
+
+            // Add OpenAPI/Swagger document
+            // registers a Swagger v2.0 document with the name "v1" (default)
+            // see https://github.com/RSuter/NSwag/wiki/AspNetCore-Middleware
+            services.AddSwaggerDocument(configure =>
+            {
+                configure.PostProcess = (document) =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = $"{nameof(StarFleetOs)}";
+                    document.Info.Description = "API Explorer";
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,8 +53,14 @@ namespace StarFleetOs
             // Error Handling
             if (env.IsDevelopment())
             {
+                // Show exceptions
                 app.UseDeveloperExceptionPage();
             }
+
+            // Add OpenAPI/Swagger middleware
+            // Serves the registered OpenAPI/Swagger documents by default on `/swagger/{documentName}/swagger.json`
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
 
             // Adds endpoint routing support
             app.UseRouting();
