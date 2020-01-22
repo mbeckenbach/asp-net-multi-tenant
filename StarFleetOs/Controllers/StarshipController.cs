@@ -1,14 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Distributed;
-using StarFleetOs.Database.Tenants;
+﻿using Microsoft.AspNetCore.Mvc;
 using StarFleetOs.Database.Tenants.Models;
 using StarFleetOs.Model;
-using StarFleetOs.Services;
 
 namespace StarFleetOs.Controllers
 {
@@ -18,9 +10,7 @@ namespace StarFleetOs.Controllers
     {
         private readonly AppTenant tenant;
 
-        public StarshipController(
-            AppTenant tenant
-            )
+        public StarshipController(AppTenant tenant)
         {
             this.tenant = tenant;
         }

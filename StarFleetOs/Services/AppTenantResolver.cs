@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
-using SaasKit.Multitenancy;
 using StarFleetOs.Database.Tenants;
 using StarFleetOs.Database.Tenants.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace StarFleetOs.Services

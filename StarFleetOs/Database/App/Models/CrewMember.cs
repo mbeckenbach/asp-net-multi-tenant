@@ -2,9 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using StarFleetOs.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace StarFleetOs.Database.App.Models
 {
